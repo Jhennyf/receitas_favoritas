@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import '../data/receitas_data.dart';
+import 'package:provider/provider.dart';
 import '../widgets/receita_card.dart';
+import '../providers/receitas_provider.dart';
 import 'configuracoes_screen.dart';
 import 'sobre_screen.dart';
+import 'adicionar_editar_receita_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,48 +13,20 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
+  
+  final List<String> _categorias = ['doces', 'salgadas', 'bebidas'];
+  final List<String> _titulosCategorias = ['Doces', 'Salgadas', 'Bebidas'];
+  final List<IconData> _iconsCategorias = [Icons.cake, Icons.restaurant, Icons.local_drink];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Receitas Favoritas'),
-        backgroundColor: Colors.teal,
+        title: Text(_titulosCategorias[_currentIndex]),
+        backgroundColor: _getColorForCategory(_categorias[_currentIndex]),
         foregroundColor: Colors.white,
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          tabs: const [
-            Tab(
-              icon: Icon(Icons.cake),
-              text: 'Doces',
-            ),
-            Tab(
-              icon: Icon(Icons.restaurant),
-              text: 'Salgadas',
-            ),
-            Tab(
-              icon: Icon(Icons.local_drink),
-              text: 'Bebidas',
-            ),
-          ],
-        ),
       ),
       drawer: Drawer(
         child: ListView(
@@ -118,28 +92,121 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildReceitasList('doces'),
-          _buildReceitasList('salgadas'),
-          _buildReceitasList('bebidas'),
+      body: _buildReceitasList(_categorias[_currentIndex]),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: _getColorForCategory(_categorias[_currentIndex]),
+        unselectedItemColor: Colors.grey,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(_iconsCategorias[0]),
+            label: _titulosCategorias[0],
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(_iconsCategorias[1]),
+            label: _titulosCategorias[1],
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(_iconsCategorias[2]),
+            label: _titulosCategorias[2],
+          ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AdicionarEditarReceitaScreen(
+                categoriaInicial: _categorias[_currentIndex],
+              ),
+            ),
+          );
+        },
+        backgroundColor: _getColorForCategory(_categorias[_currentIndex]),
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.add),
       ),
     );
   }
 
   Widget _buildReceitasList(String categoria) {
-    final receitas = ReceitasData.getReceitasPorCategoria(categoria);
-    
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListView.builder(
-        itemCount: receitas.length,
-        itemBuilder: (context, index) {
-          return ReceitaCard(receita: receitas[index]);
-        },
-      ),
+    return Consumer<ReceitasProvider>(
+      builder: (context, provider, child) {
+        final receitas = provider.getReceitasPorCategoria(categoria);
+        
+        if (receitas.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  _getIconForCategory(categoria),
+                  size: 64,
+                  color: Colors.grey[300],
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Nenhuma receita encontrada',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Toque no botão + para adicionar uma nova receita',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[500],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          );
+        }
+        
+        return ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: receitas.length,
+          itemBuilder: (context, index) {
+            return ReceitaCard(receita: receitas[index]);
+          },
+        );
+      },
     );
+  }
+
+  Color _getColorForCategory(String categoria) {
+    switch (categoria) {
+      case 'doces':
+        return Colors.pink[400]!;
+      case 'salgadas':
+        return Colors.orange[400]!;
+      case 'bebidas':
+        return Colors.blue[400]!;
+      default:
+        return Colors.teal;
+    }
+  }
+
+  IconData _getIconForCategory(String categoria) {
+    switch (categoria) {
+      case 'doces':
+        return Icons.cake;
+      case 'salgadas':
+        return Icons.restaurant;
+      case 'bebidas':
+        return Icons.local_drink;
+      default:
+        return Icons.restaurant_menu;
+    }
   }
 }

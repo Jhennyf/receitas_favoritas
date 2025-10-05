@@ -42,11 +42,8 @@ lib/
 ```
 
 ## 🎨 Design e UX
-
-- **Interface Intuitiva**: Navegação fluida entre categorias usando TabBar
-- **Tema Moderno**: Paleta de cores em tons de teal com Material Design 3
-- **Responsivo**: Layout que se adapta a diferentes tamanhos de tela
-- **Feedback Visual**: Estados visuais claros para interações do usuário
+Versão 1 do sistema
+![alt text](image.png)
 
 ## 🚀 Como Executar
 
