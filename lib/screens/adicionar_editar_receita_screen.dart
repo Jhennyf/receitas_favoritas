@@ -23,6 +23,8 @@ class _AdicionarEditarReceitaScreenState extends State<AdicionarEditarReceitaScr
   final _descricaoController = TextEditingController();
   final _ingredientesController = TextEditingController();
   final _modoPreparoController = TextEditingController();
+  final _tempoController = TextEditingController();
+  final _imagemController = TextEditingController();
   
   String _categoriaSelecionada = 'doces';
   bool _isLoading = false;
@@ -37,6 +39,8 @@ class _AdicionarEditarReceitaScreenState extends State<AdicionarEditarReceitaScr
       _descricaoController.text = widget.receita!.descricao;
       _ingredientesController.text = widget.receita!.ingredientes.join('\n');
       _modoPreparoController.text = widget.receita!.modoPreparo;
+      _tempoController.text = widget.receita!.tempoPreparo.toString();
+      _imagemController.text = widget.receita!.imagemUrl;
       _categoriaSelecionada = widget.receita!.categoria;
     } else if (widget.categoriaInicial != null) {
       // Modo adicionar com categoria pré-selecionada
@@ -50,6 +54,8 @@ class _AdicionarEditarReceitaScreenState extends State<AdicionarEditarReceitaScr
     _descricaoController.dispose();
     _ingredientesController.dispose();
     _modoPreparoController.dispose();
+    _tempoController.dispose();
+    _imagemController.dispose();
     super.dispose();
   }
 
@@ -104,7 +110,7 @@ class _AdicionarEditarReceitaScreenState extends State<AdicionarEditarReceitaScr
               ),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
-                value: _categoriaSelecionada,
+                initialValue: _categoriaSelecionada,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -193,6 +199,52 @@ class _AdicionarEditarReceitaScreenState extends State<AdicionarEditarReceitaScr
                 },
               ),
               const SizedBox(height: 32),
+              // Imagem (caminho de asset local opcional)
+              TextFormField(
+                controller: _imagemController,
+                decoration: const InputDecoration(
+                  labelText: 'Caminho da imagem (assets) - opcional',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.image),
+                  hintText: 'assets/images/minha_foto.jpg',
+                ),
+                onChanged: (v) => setState(() {}),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) return null;
+                  // simples validação: se informado, deve começar com assets/
+                  if (!value.trim().startsWith('assets/')) return 'Use um caminho dentro de assets/';
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              // Preview da imagem (se for caminho assets)
+              if (_imagemController.text.trim().isNotEmpty && _imagemController.text.trim().startsWith('assets/'))
+                Container(
+                  height: 160,
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  child: Image.asset(
+                    _imagemController.text.trim(),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              // Tempo de Preparo
+              TextFormField(
+                controller: _tempoController,
+                decoration: const InputDecoration(
+                  labelText: 'Tempo de preparo (minutos)',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.timer),
+                ),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) return 'Por favor, insira o tempo de preparo';
+                  final parsed = int.tryParse(value);
+                  if (parsed == null || parsed <= 0) return 'Insira um número positivo';
+                  return null;
+                },
+              ),
+              const SizedBox(height: 32),
             ],
           ),
         ),
@@ -208,15 +260,17 @@ class _AdicionarEditarReceitaScreenState extends State<AdicionarEditarReceitaScr
     });
 
     // Simular um delay para mostrar o loading
-    await Future.delayed(const Duration(milliseconds: 500));
-
     final provider = Provider.of<ReceitasProvider>(context, listen: false);
-    
+
     final ingredientes = _ingredientesController.text
         .split('\n')
         .where((ingredient) => ingredient.trim().isNotEmpty)
         .map((ingredient) => ingredient.trim())
         .toList();
+    // small delay to show a loading indicator (non-blocking for context use)
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (!mounted) return;
 
     if (widget.receita != null) {
       // Editar receita existente
@@ -226,8 +280,9 @@ class _AdicionarEditarReceitaScreenState extends State<AdicionarEditarReceitaScr
         descricao: _descricaoController.text.trim(),
         ingredientes: ingredientes,
         modoPreparo: _modoPreparoController.text.trim(),
+        tempoPreparo: int.parse(_tempoController.text.trim()),
         categoria: _categoriaSelecionada,
-        imagemUrl: widget.receita!.imagemUrl,
+        imagemUrl: _imagemController.text.trim().isNotEmpty ? _imagemController.text.trim() : widget.receita!.imagemUrl,
       );
       
       provider.editarReceita(widget.receita!.id, receitaEditada);
@@ -240,14 +295,29 @@ class _AdicionarEditarReceitaScreenState extends State<AdicionarEditarReceitaScr
       );
     } else {
       // Adicionar nova receita
+      final hex = () {
+        switch (_categoriaSelecionada) {
+          case 'doces':
+            return 'F06292';
+          case 'salgadas':
+            return 'FB8C00';
+          case 'bebidas':
+            return '42A5F5';
+          default:
+            return 'BDBDBD';
+        }
+      }();
       final novaReceita = Receita(
         id: provider.gerarProximoId(),
         titulo: _tituloController.text.trim(),
         descricao: _descricaoController.text.trim(),
         ingredientes: ingredientes,
         modoPreparo: _modoPreparoController.text.trim(),
+        tempoPreparo: int.parse(_tempoController.text.trim()),
         categoria: _categoriaSelecionada,
-        imagemUrl: 'https://via.placeholder.com/200x150/${_getColorForCategory(_categoriaSelecionada).value.toRadixString(16)}/FFFFFF?text=${_tituloController.text.trim()}',
+        imagemUrl: _imagemController.text.trim().isNotEmpty
+            ? _imagemController.text.trim()
+            : 'https://via.placeholder.com/200x150/$hex/FFFFFF?text=${_tituloController.text.trim()}',
       );
       
       provider.adicionarReceita(novaReceita);
@@ -270,13 +340,13 @@ class _AdicionarEditarReceitaScreenState extends State<AdicionarEditarReceitaScr
   Color _getColorForCategory(String categoria) {
     switch (categoria) {
       case 'doces':
-        return Colors.pink[400]!;
+        return const Color(0xFFF06292); // pink[400]
       case 'salgadas':
-        return Colors.orange[400]!;
+        return const Color(0xFFFB8C00); // orange[400]
       case 'bebidas':
-        return Colors.blue[400]!;
+        return const Color(0xFF42A5F5); // blue[400]
       default:
-        return Colors.grey[400]!;
+        return const Color(0xFFBDBDBD); // grey[400]
     }
   }
 }

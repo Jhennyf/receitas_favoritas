@@ -4,6 +4,7 @@ class Receita {
   final String descricao;
   final List<String> ingredientes;
   final String modoPreparo;
+  final int tempoPreparo; // em minutos
   final String categoria;
   final String imagemUrl;
 
@@ -13,6 +14,7 @@ class Receita {
     required this.descricao,
     required this.ingredientes,
     required this.modoPreparo,
+    required this.tempoPreparo,
     required this.categoria,
     required this.imagemUrl,
   });

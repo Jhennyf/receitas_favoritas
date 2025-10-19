@@ -3,7 +3,7 @@ import '../models/receita.dart';
 import '../data/receitas_data.dart';
 
 class ReceitasProvider extends ChangeNotifier {
-  List<Receita> _receitas = ReceitasData.receitas;
+  final List<Receita> _receitas = ReceitasData.receitas;
 
   List<Receita> get receitas => List.unmodifiable(_receitas);
 

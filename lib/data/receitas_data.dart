@@ -14,8 +14,9 @@ class ReceitasData {
         'Chocolate granulado para decorar',
       ],
       modoPreparo: 'Em uma panela, misture o leite condensado, chocolate em pó e manteiga. Cozinhe em fogo médio, mexendo sempre, até desgrudar do fundo da panela. Deixe esfriar e faça bolinhas. Passe no chocolate granulado.',
+      tempoPreparo: 30,
       categoria: 'doces',
-      imagemUrl: 'https://via.placeholder.com/200x150/8B4513/FFFFFF?text=Brigadeiro',
+      imagemUrl: 'assets/images/brigadeiro.jpg',
     ),
     Receita(
       id: '2',
@@ -28,8 +29,9 @@ class ReceitasData {
         '1 xícara de açúcar para a calda',
       ],
       modoPreparo: 'Faça a calda derretendo o açúcar até caramelizar. Bata todos os outros ingredientes no liquidificador. Despeje sobre a calda e asse em banho-maria por 40 minutos.',
+      tempoPreparo: 90,
       categoria: 'doces',
-      imagemUrl: 'https://via.placeholder.com/200x150/FFD700/FFFFFF?text=Pudim',
+      imagemUrl: 'assets/images/pudim.jpg',
     ),
     Receita(
       id: '3',
@@ -42,8 +44,9 @@ class ReceitasData {
         '3 colheres de açúcar',
       ],
       modoPreparo: 'Derreta o chocolate em banho-maria. Misture as gemas. Incorpore as claras em neve delicadamente. Leve à geladeira por 4 horas.',
+      tempoPreparo: 240,
       categoria: 'doces',
-      imagemUrl: 'https://via.placeholder.com/200x150/654321/FFFFFF?text=Mousse',
+      imagemUrl: 'assets/images/musse_chocolate.jpg',
     ),
     
     // Salgadas
@@ -62,8 +65,9 @@ class ReceitasData {
         'Molho branco',
       ],
       modoPreparo: 'Refogue a carne com cebola e alho. Monte a lasanha intercalando massa, molho bolonhesa, molho branco e queijo. Asse por 40 minutos a 180°C.',
+      tempoPreparo: 60,
       categoria: 'salgadas',
-      imagemUrl: 'https://via.placeholder.com/200x150/DC143C/FFFFFF?text=Lasanha',
+      imagemUrl: 'assets/images/lasanha.png',
     ),
     Receita(
       id: '5',
@@ -79,8 +83,9 @@ class ReceitasData {
         'Manteiga',
       ],
       modoPreparo: 'Refogue a cebola, adicione o arroz e o vinho. Vá adicionando caldo aos poucos, mexendo sempre. Adicione os camarões no final e finalize com queijo e manteiga.',
+      tempoPreparo: 40,
       categoria: 'salgadas',
-      imagemUrl: 'https://via.placeholder.com/200x150/FF6347/FFFFFF?text=Risotto',
+      imagemUrl: 'assets/images/risoto.jpg',
     ),
     Receita(
       id: '6',
@@ -95,8 +100,9 @@ class ReceitasData {
         'Queijo parmesão',
       ],
       modoPreparo: 'Empane os filés na farinha e ovo. Frite até dourar. Coloque molho de tomate e queijo por cima. Leve ao forno até o queijo derreter.',
+      tempoPreparo: 50,
       categoria: 'salgadas',
-      imagemUrl: 'https://via.placeholder.com/200x150/228B22/FFFFFF?text=Parmegiana',
+      imagemUrl: 'assets/images/parmergiana.jpg',
     ),
     
     // Bebidas
@@ -111,12 +117,13 @@ class ReceitasData {
         'Gelo',
       ],
       modoPreparo: 'Macere o limão com açúcar no copo. Adicione gelo e complete com cachaça. Misture bem.',
+      tempoPreparo: 5,
       categoria: 'bebidas',
-      imagemUrl: 'https://via.placeholder.com/200x150/32CD32/FFFFFF?text=Caipirinha',
+      imagemUrl: 'assets/images/caipirinha.jpg',
     ),
     Receita(
       id: '8',
-      titulo: 'Smoothie de Frutas',
+      titulo: 'Vitamina de Frutas',
       descricao: 'Vitamina refrescante com frutas variadas',
       ingredientes: [
         '1 banana',
@@ -126,8 +133,9 @@ class ReceitasData {
         '1 colher de mel',
       ],
       modoPreparo: 'Bata todas as frutas com o leite e mel no liquidificador até ficar homogêneo. Sirva gelado.',
+      tempoPreparo: 10,
       categoria: 'bebidas',
-      imagemUrl: 'https://via.placeholder.com/200x150/FF69B4/FFFFFF?text=Smoothie',
+      imagemUrl: 'assets/images/smotie.png',
     ),
     Receita(
       id: '9',
@@ -142,8 +150,9 @@ class ReceitasData {
         'Canela em pó',
       ],
       modoPreparo: 'Misture o café, leite e açúcar. Adicione gelo e bata. Sirva com chantilly e canela por cima.',
+      tempoPreparo: 8,
       categoria: 'bebidas',
-      imagemUrl: 'https://via.placeholder.com/200x150/8B4513/FFFFFF?text=Café+Gelado',
+      imagemUrl: 'assets/images/cafe-gelado.jpg',
     ),
   ];
 

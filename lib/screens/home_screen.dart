@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 import '../widgets/receita_card.dart';
 import '../providers/receitas_provider.dart';
 import 'configuracoes_screen.dart';
 import 'sobre_screen.dart';
 import 'adicionar_editar_receita_screen.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,67 +31,59 @@ class _HomeScreenState extends State<HomeScreen> {
         foregroundColor: Colors.white,
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.teal,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.restaurant_menu,
-                    color: Colors.white,
-                    size: 48,
+        child: Consumer2<AuthProvider, ReceitasProvider>(
+          builder: (context, authProvider, receitasProvider, child) {
+            final user = authProvider.usuarioLogado;
+            return ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                UserAccountsDrawerHeader(
+                  accountName: Text(user?.nome ?? 'Convidado'),
+                  accountEmail: Text(user?.email ?? ''),
+                  currentAccountPicture: const CircleAvatar(
+                    child: Icon(Icons.person),
                   ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Receitas Favoritas',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'Suas receitas, seus sabores',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Configurações'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ConfiguracoesScreen(),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text('Sobre'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SobreScreen(),
-                  ),
-                );
-              },
-            ),
-          ],
+                  decoration: const BoxDecoration(color: Colors.teal),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.settings),
+                  title: const Text('Configurações'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ConfiguracoesScreen(),
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.info),
+                  title: const Text('Sobre'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SobreScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: const Text('Sair'),
+                  onTap: () {
+                    // logout e voltar para login
+                    authProvider.logout();
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const LoginScreen()));
+                  },
+                ),
+              ],
+            );
+          },
         ),
       ),
       body: _buildReceitasList(_categorias[_currentIndex]),
@@ -187,13 +181,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Color _getColorForCategory(String categoria) {
     switch (categoria) {
       case 'doces':
-        return Colors.pink[400]!;
+        return const Color(0xFFF06292); // pink[400]
       case 'salgadas':
-        return Colors.orange[400]!;
+        return const Color(0xFFFB8C00); // orange[400]
       case 'bebidas':
-        return Colors.blue[400]!;
+        return const Color(0xFF42A5F5); // blue[400]
       default:
-        return Colors.teal;
+        return const Color(0xFF009688); // teal
     }
   }
 

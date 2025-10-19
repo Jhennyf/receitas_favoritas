@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'screens/home_screen.dart';
+// ...existing code...
 import 'providers/receitas_provider.dart';
+import 'providers/auth_provider.dart';
+import 'screens/login_screen.dart';
 
 void main() {
   runApp(const ReceitasFavoritasApp());
@@ -12,8 +14,11 @@ class ReceitasFavoritasApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ReceitasProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => ReceitasProvider()),
+      ],
       child: MaterialApp(
         title: 'Receitas Favoritas',
         theme: ThemeData(
@@ -26,7 +31,7 @@ class ReceitasFavoritasApp extends StatelessWidget {
             elevation: 4,
           ),
         ),
-        home: const HomeScreen(),
+        home: const LoginScreen(),
         debugShowCheckedModeBanner: false,
       ),
     );
