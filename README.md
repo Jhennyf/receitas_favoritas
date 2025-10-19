@@ -51,64 +51,58 @@ Versão 1 do sistema
    - Flutter SDK instalado
    - Dart SDK
    - Emulador ou dispositivo físico
+# 🍽️ Receitas Favoritas
 
-2. **Instalação**:
-   ```bash
-   git clone [repository-url]
-   cd receitas_favoritas
-   flutter pub get
-   ```
+Aplicativo Flutter para navegar, adicionar e gerenciar receitas organizadas por categorias (Doces, Salgadas e Bebidas). O projeto é intencionalmente simples e serve como base para experimentar UI/UX, CRUD local e autenticação básica.
 
-3. **Executar o app**:
-   ```bash
-   flutter run
-   ```
+## Principais recursos
 
-## 🧪 Testes
+- Navegação por abas (Doces, Salgadas, Bebidas)
+- Cards com visual das receitas e acesso à tela de detalhes
+- CRUD: adicionar, editar e remover receitas (com desfazer)
+- Autenticação simples (login / cadastro) em memória
+- Suporte para imagens locais em `assets/images/`
 
-Execute os testes com:
+## Estrutura resumida
+
+```
+lib/
+├─ main.dart
+├─ models/ (modelos de dados)
+├─ data/ (dados de exemplo)
+├─ providers/ (state management via Provider)
+├─ screens/ (telas do app)
+└─ widgets/ (componentes reutilizáveis)
+```
+
+## Como executar
+
+1. Certifique-se que o Flutter está instalado.
+2. No terminal, a partir da raiz do projeto:
+
+```bash
+cd "c:\Users\jhenn\OneDrive\Documentos\App de Receitas Favoritas\receitas_favoritas"
+flutter pub get
+flutter run -d chrome
+```
+
+Observação: este projeto usa imagens locais em `assets/images/`. Adicione `assets/images/receitas.jpeg` (ou outras imagens) para o visual das telas de login/cadastro.
+
+## Testes
+
 ```bash
 flutter test
 ```
 
-## 📋 Receitas Incluídas
+## Notas de desenvolvimento
 
-### Doces
-- 🍫 Brigadeiro Gourmet
-- 🍮 Pudim de Leite
-- 🍰 Mousse de Chocolate
+- Persistência: atualmente os dados (receitas e usuários) são armazenados em memória através de providers. Para manter dados entre reinicializações, é recomendada a integração com SQLite, Hive ou um backend.
+- Autenticação: apenas demonstrativa/local; para produção use backend e armazenamento seguro de senhas.
 
-### Salgadas
-- 🍝 Lasanha Bolonhesa
-- 🦐 Risotto de Camarão
-- 🍗 Frango à Parmegiana
+## Contribuições
 
-### Bebidas
-- 🍸 Caipirinha de Limão
-- 🥤 Smoothie de Frutas
-- ☕ Café Gelado Especial
-
-## 🔄 Navegação
-
-- **Tela Principal**: TabBar com as três categorias
-- **Cards de Receita**: Toque para ver detalhes
-- **Tela de Detalhes**: Botão voltar para retornar à categoria
-- **Drawer**: Menu lateral com opções adicionais
-
-## 🛠️ Tecnologias Utilizadas
-
-- **Flutter**: Framework de desenvolvimento
-- **Material Design 3**: Design system
-- **Dart**: Linguagem de programação
-
-## 📝 Metodologia
-
-O aplicativo foi desenvolvido seguindo os princípios de:
-- **Experiência do usuário intuitiva**
-- **Navegação fluida entre seções**
-- **Hierarquia visual clara**
-- **Consistência no design**
+Fique à vontade para abrir PRs com melhorias: seleção de imagens, persistência, integração com API, temas e testes adicionais.
 
 ---
 
-Desenvolvido com ❤️ usando Flutter
+Desenvolvido com ❤️ — se quiser, eu implemento melhorias visuais (mostrar senha, animações) ou adiciono um seletor de imagem para o fundo.
