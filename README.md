@@ -41,52 +41,42 @@ lib/
     └── receita_card.dart       # Widget do card da receita
 ```
 
-## 🎨 Design e UX
-Versão 1 do sistema
-![alt text](image.png)
-
-## 🚀 Como Executar
-
-1. **Pré-requisitos**:
-   - Flutter SDK instalado
-   - Dart SDK
-   - Emulador ou dispositivo físico
-# 🍽️ Receitas Favoritas
-
-Aplicativo Flutter para navegar, adicionar e gerenciar receitas organizadas por categorias (Doces, Salgadas e Bebidas). O projeto é intencionalmente simples e serve como base para experimentar UI/UX, CRUD local e autenticação básica.
-
-## Principais recursos
+## Recursos principais
 
 - Navegação por abas (Doces, Salgadas, Bebidas)
-- Cards com visual das receitas e acesso à tela de detalhes
-- CRUD: adicionar, editar e remover receitas (com desfazer)
-- Autenticação simples (login / cadastro) em memória
+- Cards com resumo das receitas
+- Tela de detalhes (ingredientes e modo de preparo)
+- CRUD: adicionar, editar e remover receitas (com opção de desfazer)
+- Autenticação simples (login/cadastro, armazenados em memória)
 - Suporte para imagens locais em `assets/images/`
 
-## Estrutura resumida
+## Estrutura do projeto
 
 ```
 lib/
 ├─ main.dart
-├─ models/ (modelos de dados)
-├─ data/ (dados de exemplo)
-├─ providers/ (state management via Provider)
-├─ screens/ (telas do app)
-└─ widgets/ (componentes reutilizáveis)
+├─ models/        # modelos (Receita, Usuario)
+├─ data/          # dados de exemplo
+├─ providers/     # lógica de estado (Provider)
+├─ screens/       # telas do app (login, home, detalhes...)
+└─ widgets/       # componentes reutilizáveis
 ```
 
-## Como executar
+## Começando (rápido)
 
-1. Certifique-se que o Flutter está instalado.
-2. No terminal, a partir da raiz do projeto:
+1. Clone o repositório e entre na pasta:
 
 ```bash
-cd "c:\Users\jhenn\OneDrive\Documentos\App de Receitas Favoritas\receitas_favoritas"
+git clone <repo-url>
+cd receitas_favoritas
+```
+
+2. Instale dependências e rode no Chrome:
+
+```bash
 flutter pub get
 flutter run -d chrome
 ```
-
-Observação: este projeto usa imagens locais em `assets/images/`. Adicione `assets/images/receitas.jpeg` (ou outras imagens) para o visual das telas de login/cadastro.
 
 ## Testes
 
@@ -94,15 +84,15 @@ Observação: este projeto usa imagens locais em `assets/images/`. Adicione `ass
 flutter test
 ```
 
-## Notas de desenvolvimento
+## Observações técnicas
 
-- Persistência: atualmente os dados (receitas e usuários) são armazenados em memória através de providers. Para manter dados entre reinicializações, é recomendada a integração com SQLite, Hive ou um backend.
-- Autenticação: apenas demonstrativa/local; para produção use backend e armazenamento seguro de senhas.
+- Persistência: os dados atuais são mantidos em memória. Para persistência entre execuções, recomendo integrar Hive, SharedPreferences ou SQLite.
+- Autenticação: mecanismo local para demonstração — em produção use um backend e hashing/armazenamento seguro de credenciais.
 
-## Contribuições
+## Como contribuir
 
-Fique à vontade para abrir PRs com melhorias: seleção de imagens, persistência, integração com API, temas e testes adicionais.
+- Faça um fork, crie uma branch com a melhoria, e abra um PR.
+- Exemplos de melhorias úteis: seleção de imagens, persistência, testes e melhorias de acessibilidade.
 
----
 
-Desenvolvido com ❤️ — se quiser, eu implemento melhorias visuais (mostrar senha, animações) ou adiciono um seletor de imagem para o fundo.
+Desenvolvido com ❤️
